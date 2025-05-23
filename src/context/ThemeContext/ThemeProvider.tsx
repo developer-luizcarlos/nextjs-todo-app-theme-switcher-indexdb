@@ -16,8 +16,6 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => setTheme(getUserColorScheme()), []);
 
-  console.log(theme);
-
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
