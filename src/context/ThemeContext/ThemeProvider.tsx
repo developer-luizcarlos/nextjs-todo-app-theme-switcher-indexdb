@@ -1,6 +1,8 @@
+"use client";
+
 import { getUserColorScheme } from "@/helpers/index";
 import { type Theme } from "@/types/theme.types";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const ThemeContext = createContext<{
   theme: Theme;
@@ -10,7 +12,11 @@ export const ThemeContext = createContext<{
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setTheme] = useState<Theme>(() => getUserColorScheme());
+  const [theme, setTheme] = useState<Theme>("light");
+
+  useEffect(() => setTheme(getUserColorScheme()), []);
+
+  console.log(theme);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
