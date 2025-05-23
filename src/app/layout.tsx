@@ -1,3 +1,4 @@
+import ThemeProvideer from "@/context/ThemeContext/ThemeProvider";
 import type { Metadata } from "next";
 import { fontJosefinSans } from "../../public/fonts";
 import "./globals.css";
@@ -15,7 +16,9 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body className={`${fontJosefinSans.className}`}>{children}</body>
+      <body className={`${fontJosefinSans.className}`}>
+        <ThemeProvideer>{children}</ThemeProvideer>
+      </body>
     </html>
   );
 };
