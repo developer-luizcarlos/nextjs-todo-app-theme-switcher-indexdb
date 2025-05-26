@@ -5,7 +5,10 @@ import Image from "next/image";
 import { useContext } from "react";
 
 const Home: React.FC = () => {
-  const { theme } = useContext(ThemeContext)!;
+  const { theme, setTheme } = useContext(ThemeContext)!;
+
+  const toggleTheme = () =>
+    setTheme((previousTheme) => (previousTheme === "light" ? "dark" : "light"));
 
   return (
     <>
@@ -33,6 +36,9 @@ const Home: React.FC = () => {
             alt="Change theme"
             height={30}
             width={30}
+            className="cursor-pointer"
+            role="button"
+            onClick={toggleTheme}
           />
         </header>
       </article>
