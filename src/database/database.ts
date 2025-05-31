@@ -2,7 +2,7 @@ import { type Task } from "@/types/task.types";
 import { openDB } from "idb";
 
 const databaseName = "TodoDB";
-const databaseVersion = 1;
+const databaseVersion = 2;
 const storeName = "tasks";
 
 const initTodoDatabase = async () => {
