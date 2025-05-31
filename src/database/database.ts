@@ -1,11 +1,15 @@
 import { type Task } from "@/types/task.types";
 import { openDB } from "idb";
 
+const databaseName = "TodoDB";
+const databaseVersion = 1;
+const storeName = "tasks";
+
 const initTodoDatabase = async () => {
-  await openDB("TodoDB", 1, {
+  await openDB(databaseName, databaseVersion, {
     upgrade(db) {
-      if (!db.objectStoreNames.contains("tasks")) {
-        db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
       }
     },
   });
@@ -14,12 +18,12 @@ const initTodoDatabase = async () => {
 export const saveTask = async (task: Task) => {
   initTodoDatabase();
 
-  const db = await openDB("TodoDB", 1);
-  await db.put("tasks", task);
+  const db = await openDB(databaseName, databaseVersion);
+  await db.put(storeName, task);
   db.close();
 };
 
 export const getAllTasks = async (): Promise<Task[]> => {
-  const db = await openDB("TodoDB", 2);
-  return (await db.getAll("tasks")) as Task[];
+  const db = await openDB(databaseName, databaseVersion);
+  return (await db.getAll(storeName)) as Task[];
 };
