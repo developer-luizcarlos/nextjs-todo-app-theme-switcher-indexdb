@@ -1,14 +1,11 @@
 "use client";
 
 import { ThemeContext } from "@/context/ThemeContext/ThemeProvider";
-import { startDatabase } from "@/database/database";
 import Image from "next/image";
 import { useContext } from "react";
 
 const Home: React.FC = () => {
   const { theme, setTheme } = useContext(ThemeContext)!;
-
-  startDatabase();
 
   const toggleTheme = () =>
     setTheme((previousTheme) => (previousTheme === "light" ? "dark" : "light"));

@@ -1,38 +1,20 @@
-const databaseVersionInformation = {
-  name: "todoDatabase",
-  version: 1,
-  updateVersion: function () {
-    this.version += 1;
-  },
+import { type Task } from "@/types/task.types";
+import { openDB } from "idb";
+
+const initTodoDatabase = async () => {
+  await openDB("TodoDB", 1, {
+    upgrade(db) {
+      if (!db.objectStoreNames.contains("tasks")) {
+        db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
+      }
+    },
+  });
 };
 
-const request = indexedDB.open(
-  databaseVersionInformation.name,
-  databaseVersionInformation.version
-);
+export const saveTask = async (task: Task) => {
+  initTodoDatabase();
 
-request.onupgradeneeded = (event: Event) => {
-  const db = (event.target as IDBOpenDBRequest).result;
-
-  if (!db.objectStoreNames.contains("TodoStore")) {
-    db.createObjectStore("TodoStore", {
-      keyPath: "id",
-      autoIncrement: true,
-    });
-  }
-};
-
-export const startDatabase = () => {
-  request.onupgradeneeded = (event: Event) => {
-    const db = (event.target as IDBOpenDBRequest).result;
-
-    if (!db.objectStoreNames.contains("TodoStore")) {
-      db.createObjectStore("TodoStore", {
-        keyPath: "id",
-        autoIncrement: true,
-      });
-    }
-  };
-
-  request.onsuccess = () => console.log(`Database opened successfully`);
+  const db = await openDB("TodoDB", 1);
+  await db.put("tasks", task);
+  db.close();
 };
