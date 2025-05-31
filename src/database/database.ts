@@ -18,3 +18,8 @@ export const saveTask = async (task: Task) => {
   await db.put("tasks", task);
   db.close();
 };
+
+export const getAllTasks = async (): Promise<Task[]> => {
+  const db = await openDB("TodoDB", 2);
+  return (await db.getAll("tasks")) as Task[];
+};
